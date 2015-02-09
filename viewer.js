@@ -3,7 +3,6 @@ var meshFirstPass;
 
 var alphaCorrection = 5.0; // just a fudge factor
 var nSteps = 2000;
-var tex
 
 initVis();
 animate();
@@ -12,12 +11,12 @@ function initVis() {
     clock = new THREE.Clock();
     
     /*** Camera ***/
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
     camera.position.set(-1.73, 0.13, 0.9)
 
     /***************** Data Cloud **********************/
     // load texture
-    dataTexture = THREE.ImageUtils.loadTexture('test_data_rgba.png');
+    dataTexture = THREE.ImageUtils.loadTexture('test_data_rgba_centre.png');
 
     var boxGeometry = new THREE.BoxGeometry(1.0, 1.0, 1.0); // the block to render inside
     boxGeometry.doubleSided = true;

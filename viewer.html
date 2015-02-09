@@ -80,7 +80,7 @@
 	    vec3 frontPos = worldSpaceCoords;
 
 	    //The direction from the front position to back position.
-	    vec3 dir = backPos - frontPos;
+	    vec3 dir = frontPos - backPos;
 	
 	    float rayLength = length(dir);
 	
@@ -92,7 +92,7 @@
 	    float deltaDirectionLength = length(deltaDirection);
 
 	    //Start the ray casting from the front position.
-	    vec3 currentPosition = frontPos;
+	    vec3 currentPosition = backPos;
 	
 	    //The color accumulator.
 	    vec4 accumulatedColor = vec4(0.0);
