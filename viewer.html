@@ -124,21 +124,11 @@
     	return vec4(color.xyz, alpha);
     }
 
-    // max 2d size is 4096 x 4096
+    vec4 getPathRGBA(vec3 startPos, vec3 endPos, float steps, sampler2D tex){
+    	/* Calculates the total RGBA values of a given path through a texture */
 
-    void main( void ) {
-	    //Transform the coordinates it from [-1;1] to [0;1]
-	    vec2 firstPassTexCoord = vec2(((projectedCoords.x / projectedCoords.w) + 1.0 ) / 2.0,
-					    ((projectedCoords.y / projectedCoords.w) + 1.0 ) / 2.0 );
-
-	    //The back position is the world space position stored in the texture.
-	    vec3 backPos = texture2D(firstPassTexture, firstPassTexCoord).xyz;
-
-	    //The front position is the world space position of the second render pass.
-	    vec3 frontPos = worldSpaceCoords;
-
-	    //The direction from the front position to back position.
-	    vec3 dir = backPos - frontPos;
+    	//The direction from the front position to back position.
+	    vec3 dir = endPos - startPos;
 	
 	    float rayLength = length(dir);
 	
@@ -149,10 +139,9 @@
 	    vec3 deltaDirection = normalize(dir) * delta;
 	    float deltaDirectionLength = length(deltaDirection);
 
-	    //Start the ray casting from the front position.
-	    vec3 currentPosition = frontPos;
-	
-	    //The color accumulator.
+	    vec3 currentPosition = startPos;
+
+    	//The color accumulator.
 	    vec3 accumulatedColor = vec3(0.0);
 	
 	    //The alpha value accumulated so far.
@@ -187,8 +176,25 @@
 				break;
 			}
 	    }
-	    vec4 fragColor = vec4(accumulatedColor.x, accumulatedColor.y, accumulatedColor.z, accumulatedAlpha);
-	    gl_FragColor = fragColor;
+
+	    return vec4(accumulatedColor.xyz, accumulatedAlpha);
+    }
+
+    // max 2d size is 4096 x 4096
+
+    void main( void ) {
+	    //Transform the coordinates it from [-1;1] to [0;1]
+	    vec2 firstPassTexCoord = vec2(((projectedCoords.x / projectedCoords.w) + 1.0 ) / 2.0,
+					    ((projectedCoords.y / projectedCoords.w) + 1.0 ) / 2.0 );
+
+	    //The back position is the world space position stored in the texture.
+	    vec3 backPos = texture2D(firstPassTexture, firstPassTexCoord).xyz;
+
+	    //The front position is the world space position of the second render pass.
+	    vec3 frontPos = worldSpaceCoords;
+	
+		// cast ray from front position in direction of back position
+	    gl_FragColor = getPathRGBA(frontPos, backPos, steps, dataTexture);
     }
 
 </script>
