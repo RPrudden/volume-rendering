@@ -56,7 +56,7 @@
     varying vec4 projectedCoords;
 
     uniform sampler2D firstPassTexture, dataTexture; //i.e. tex and cubeTex
-    uniform vec3 lightPos;
+    uniform vec3 lightPosition;
     uniform float steps;
     uniform float alphaCorrection;
 
@@ -221,22 +221,25 @@
 	    float accumulatedLength = 0.0;
 	
 	    //vec4 dataSample;
-	    vec4 dataSample;
-
-	    float alphaSample;
+	    vec4 dataRGBA;
+	    vec4 lightRayRGBA;
+	    vec3 apparentRGB;
 
 	    //Perform the ray marching iterations
 	    for(int i = 0; i < MAX_STEPS; i++){
 		    //Get the voxel intensity value from the 3D texture.	
-		    dataSample = getRGBAfromDataTex(dataTexture, currentPosition, dataShape, textureShape);
+		    dataRGBA = getRGBAfromDataTex(dataTexture, currentPosition, dataShape, textureShape);
+
+		    // get contribution from the light
+		    lightRayRGBA = getPathRGBA(currentPosition, lightPosition, steps, tex);
+
+			apparentRGB = (1.0 - accumulatedAlpha) * dataRGBA.rgb * lightRayRGBA.rgb * dataRGBA.a * lightRayRGBA.a;
 
 		    //Perform the composition.
-		    accumulatedColor += (1.0 - accumulatedAlpha) * dataSample.xyz * dataSample.a;
-			//accumulatedColor += dataSample;
-
+		    accumulatedColor += apparentRGB;
 		    //Store the alpha accumulated so far.
-		    accumulatedAlpha += dataSample.a;
-		
+		    accumulatedAlpha += dataRGBA.a;
+
 		    //Advance the ray.
 		    currentPosition += deltaDirection;
 		    accumulatedLength += deltaDirectionLength;
@@ -265,7 +268,7 @@
 	    vec3 frontPos = worldSpaceCoords;
 	
 		// cast ray from front position in direction of back position
-	    gl_FragColor = getPathRGBA(frontPos, backPos, steps, dataTexture);
+	    gl_FragColor = getPathRGBAwithLight(frontPos, backPos, steps, dataTexture, lightPosition);
     }
 
 </script>
