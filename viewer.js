@@ -4,7 +4,7 @@ var meshFirstPass;
 var alphaCorrection = 0.04 ; // just a fudge factor
 var nSteps = 500;
 
-var fps = 30;
+var fps = 10;
 var now;
 var then = Date.now();
 var interval = 1000/fps;
