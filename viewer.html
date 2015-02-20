@@ -231,7 +231,7 @@
 		    dataRGBA = getRGBAfromDataTex(dataTexture, currentPosition, dataShape, textureShape);
 
 		    // get contribution from the light
-		    lightRayRGBA = getPathRGBA(currentPosition, lightPosition, steps, tex);
+		    lightRayRGBA = getPathRGBA(currentPosition, lightPosition, steps/2.0, tex);
 
 			apparentRGB = (1.0 - accumulatedAlpha) * dataRGBA.rgb * lightRayRGBA.rgb * dataRGBA.a * lightRayRGBA.a;
 
@@ -268,8 +268,8 @@
 	    vec3 frontPos = worldSpaceCoords;
 	
 		// cast ray from front position in direction of back position
-	    //gl_FragColor = getPathRGBAwithLight(frontPos, backPos, steps, dataTexture, lightPosition);
-	    gl_FragColor = getPathRGBA(frontPos, backPos, steps, dataTexture);
+	    gl_FragColor = getPathRGBAwithLight(frontPos, backPos, steps, dataTexture, lightPosition);
+	    //gl_FragColor = getPathRGBA(frontPos, backPos, steps, dataTexture);
     }
 
 </script>

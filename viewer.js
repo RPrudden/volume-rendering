@@ -26,7 +26,7 @@ function initVis() {
 
     /***************** Data Cloud **********************/
     // load texture
-    dataTexture = THREE.ImageUtils.loadTexture('./test_blob.png');
+    dataTexture = THREE.ImageUtils.loadTexture('./test_blob_32_32_48_144_144.png');
 
     var boxGeometry = new THREE.BoxGeometry(1.0, 1.0, 1.0); // the block to render inside
     boxGeometry.doubleSided = true;
@@ -73,7 +73,7 @@ function initVis() {
 
     /*************** Scene etc ************/
     renderer = new THREE.WebGLRenderer( { antialias: true} );
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth/4, window.innerHeight/4);
     renderer.setClearColor( "rgb(135, 206, 250)", 1);
 
     document.body.appendChild(renderer.domElement);
