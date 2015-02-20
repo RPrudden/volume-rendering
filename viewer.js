@@ -1,7 +1,7 @@
 var renderer, sceneFirstPass, sceneSecondPass, camera, uniforms, attributes, clock, firstPassTexture, datatex;
 var meshFirstPass;
 
-var alphaCorrection = 0.04 ; // just a fudge factor
+var alphaCorrection = 0.01 ; // just a fudge factor
 var nSteps = 500;
 
 var fps = 10;
@@ -26,7 +26,7 @@ function initVis() {
 
     /***************** Data Cloud **********************/
     // load texture
-    dataTexture = THREE.ImageUtils.loadTexture('./test_blob_hr.png');
+    dataTexture = THREE.ImageUtils.loadTexture('./test_blob.png');
 
     var boxGeometry = new THREE.BoxGeometry(1.0, 1.0, 1.0); // the block to render inside
     boxGeometry.doubleSided = true;
